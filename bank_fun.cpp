@@ -1,5 +1,6 @@
-﻿#include "bank1.h"
+#include "bank1.h"
 #define CounterNum 3
+#define CloseTime 480
 
 int cmp(Event a, Event b)
 {
@@ -95,7 +96,7 @@ bool GetHead_L(LinkQueue Q, QElemType& e)
 void Random(int* duration, int* interval)
 {
     *duration = rand() % 11 + 6;
-    *interval = rand() % 9;
+    *interval = rand() % 9 + 1;
 }
 
 int Shortest(LinkQueue Q[])
@@ -130,11 +131,11 @@ void OpenForDay(EventList& evList, LinkQueue Q[])
 void CustomerArrival(EventList& evList, LinkQueue Q[], Event ev, int& custNum)
 {
     int duration=0, interval=0, t=0, i=0;
+    Random(&duration, &interval);
     QElemType c = { ev.occurTime, duration, ev.num };
     custNum++;
-    Random(&duration, &interval);
     t = ev.occurTime + interval;
-    if (t < 80)
+    if (t < CloseTime)
     {
         Event ne = { t, 0, custNum + 1 };
         OrderInsert(evList, ne, cmp);
